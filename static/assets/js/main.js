@@ -1,7 +1,7 @@
 /**
-* Template Name: Orbit
-* Template URL: https://bootstrapmade.com/orbit-bootstrap-template/
-* Updated: Jan 13 2026 with Bootstrap v5.3.8
+* Template Name: CoreBiz
+* Template URL: https://bootstrapmade.com/corebiz-bootstrap-business-template/
+* Updated: Aug 30 2025 with Bootstrap v5.3.8
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
@@ -112,6 +112,47 @@
   });
 
   /**
+   * Initiate Pure Counter
+   */
+  new PureCounter();
+
+  /**
+   * Animate the skills items on reveal
+   */
+  let skillsAnimation = document.querySelectorAll('.skills-animation');
+  skillsAnimation.forEach((item) => {
+    new Waypoint({
+      element: item,
+      offset: '80%',
+      handler: function(direction) {
+        let progress = item.querySelectorAll('.progress .progress-bar');
+        progress.forEach(el => {
+          el.style.width = el.getAttribute('aria-valuenow') + '%';
+        });
+      }
+    });
+  });
+
+  /**
+   * Init swiper sliders
+   */
+  function initSwiper() {
+    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
+      let config = JSON.parse(
+        swiperElement.querySelector(".swiper-config").innerHTML.trim()
+      );
+
+      if (swiperElement.classList.contains("swiper-tab")) {
+        initSwiperWithCustomPagination(swiperElement, config);
+      } else {
+        new Swiper(swiperElement, config);
+      }
+    });
+  }
+
+  window.addEventListener("load", initSwiper);
+
+  /**
    * Init isotope layout and filters
    */
   document.querySelectorAll('.isotope-layout').forEach(function(isotopeItem) {
@@ -144,29 +185,44 @@
 
   });
 
-  /**
-   * Initiate Pure Counter
+  /*
+   * Pricing Toggle
    */
-  new PureCounter();
 
-  /**
-   * Init swiper sliders
-   */
-  function initSwiper() {
-    document.querySelectorAll(".init-swiper").forEach(function(swiperElement) {
-      let config = JSON.parse(
-        swiperElement.querySelector(".swiper-config").innerHTML.trim()
-      );
+  const pricingContainers = document.querySelectorAll('.pricing-toggle-container');
 
-      if (swiperElement.classList.contains("swiper-tab")) {
-        initSwiperWithCustomPagination(swiperElement, config);
+  pricingContainers.forEach(function(container) {
+    const pricingSwitch = container.querySelector('.pricing-toggle input[type="checkbox"]');
+    const monthlyText = container.querySelector('.monthly');
+    const yearlyText = container.querySelector('.yearly');
+
+    pricingSwitch.addEventListener('change', function() {
+      const pricingItems = container.querySelectorAll('.pricing-item');
+
+      if (this.checked) {
+        monthlyText.classList.remove('active');
+        yearlyText.classList.add('active');
+        pricingItems.forEach(item => {
+          item.classList.add('yearly-active');
+        });
       } else {
-        new Swiper(swiperElement, config);
+        monthlyText.classList.add('active');
+        yearlyText.classList.remove('active');
+        pricingItems.forEach(item => {
+          item.classList.remove('yearly-active');
+        });
       }
     });
-  }
+  });
 
-  window.addEventListener("load", initSwiper);
+  /**
+   * Frequently Asked Questions Toggle
+   */
+  document.querySelectorAll('.faq-item h3, .faq-item .faq-toggle, .faq-item .faq-header').forEach((faqItem) => {
+    faqItem.addEventListener('click', () => {
+      faqItem.parentNode.classList.toggle('faq-active');
+    });
+  });
 
   /**
    * Correct scrolling position upon page load for URLs containing hash links.

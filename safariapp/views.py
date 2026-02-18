@@ -8,4 +8,4 @@ def portfolio_details(request):
 def service_details(request):
     return render(request, 'service-details.html')
 def starter(request):
-    return render(request, 'starter.html')
+    return render(request, 'starter-page.html')
